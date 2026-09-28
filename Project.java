@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,11 @@ public class Project {
     private Double requiredCapacity;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ProjectSkillRequirement> skillRequirements = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Allocation> allocations = new ArrayList<>();
 
     public Project() {
@@ -74,7 +78,8 @@ public class Project {
         return skillRequirements;
     }
 
-    public void setSkillRequirements(List<ProjectSkillRequirement> skillRequirements) {
+    public void setSkillRequirements(
+            List<ProjectSkillRequirement> skillRequirements) {
         this.skillRequirements = skillRequirements;
     }
 

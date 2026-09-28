@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class EmployeeSkill {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
+    @JsonIgnore
     private Employee employee;
 
     @ManyToOne

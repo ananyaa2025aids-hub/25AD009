@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillMatrix | Employee Skill Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon">S</div>
+        <div>
+            <h2>SkillMatrix</h2>
+            <span>Smart Workforce</span>
+        </div>
+    </div>
+
+    <nav>
+
+        <button class="nav-item active" onclick="showSection('dashboard', this)">
+            <span>⌂</span>
+            Dashboard
+        </button>
+
+        <button class="nav-item" onclick="showSection('employees', this)">
+            <span>👥</span>
+            Employees
+        </button>
+
+        <button class="nav-item" onclick="showSection('skills', this)">
+            <span>◆</span>
+            Skills
+        </button>
+
+        <button class="nav-item" onclick="showSection('projects', this)">
+            <span>▣</span>
+            Projects
+        </button>
+
+        <button class="nav-item" onclick="showSection('recommendations', this)">
+            <span>★</span>
+            Recommendations
+        </button>
+
+        <button class="nav-item" onclick="showSection('allocations', this)">
+            <span>◈</span>
+            Allocations
+        </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+        <div class="system-status">
+            <span class="status-dot"></span>
+            Backend Connected
+        </div>
+    </div>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <div>
+            <p class="welcome-small">WORKFORCE MANAGEMENT</p>
+            <h1 id="page-title">Dashboard</h1>
+        </div>
+
+        <div class="top-actions">
+
+            <div class="search-box">
+                <span>⌕</span>
+                <input type="text" placeholder="Search..." id="globalSearch">
+            </div>
+
+            <div class="profile">
+                <div class="profile-avatar">A</div>
+                <div>
+                    <strong>Admin</strong>
+                    <small>Manager</small>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page-section active-section">
+
+        <div class="hero">
+
+            <div>
+                <span class="hero-label">SMART RESOURCE PLANNING</span>
+
+                <h2>
+                    Build the right team<br>
+                    with <span>SkillMatrix</span>
+                </h2>
+
+                <p>
+                    Match employee skills with project requirements,
+                    track availability and make smarter staffing decisions.
+                </p>
+
+                <button class="primary-btn"
+                        onclick="showSectionByName('recommendations')">
+                    View Recommendations →
+                </button>
+            </div>
+
+            <div class="hero-graphic">
+                <div class="circle circle-one"></div>
+                <div class="circle circle-two"></div>
+                <div class="hero-symbol">S</div>
+            </div>
+
+        </div>
+
+
+        <!-- STAT CARDS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon purple">👥</div>
+                <div>
+                    <span>Total Employees</span>
+                    <h2 id="employeeCount">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon blue">◆</div>
+                <div>
+                    <span>Available Skills</span>
+                    <h2 id="skillCount">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">▣</div>
+                <div>
+                    <span>Active Projects</span>
+                    <h2 id="projectCount">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">◈</div>
+                <div>
+                    <span>Allocations</span>
+                    <h2 id="allocationCount">0</h2>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Recent Employees</h3>
+                        <p>Employees registered in SkillMatrix</p>
+                    </div>
+
+                    <button class="text-btn"
+                            onclick="showSectionByName('employees')">
+                        View All
+                    </button>
+                </div>
+
+                <div id="recentEmployees" class="table-container">
+                    <div class="empty-state">
+                        Loading employees...
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Skills Overview</h3>
+                        <p>Available technical skills</p>
+                    </div>
+
+                    <button class="text-btn"
+                            onclick="showSectionByName('skills')">
+                        View All
+                    </button>
+                </div>
+
+                <div id="skillsOverview" class="skill-list">
+                    Loading skills...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMPLOYEES -->
+    <section id="employees" class="page-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">TEAM MANAGEMENT</span>
+                <h2>Employees</h2>
+                <p>Manage your organization's workforce.</p>
+            </div>
+
+            <button class="primary-btn" onclick="openEmployeeModal()">
+                + Add Employee
+            </button>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h3>Employee Directory</h3>
+                    <p>All registered employees</p>
+                </div>
+
+                <input
+                        class="table-search"
+                        id="employeeSearch"
+                        placeholder="Search employees..."
+                        onkeyup="filterEmployees()">
+
+            </div>
+
+            <div id="employeeTable" class="table-container">
+                Loading employees...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SKILLS -->
+    <section id="skills" class="page-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">CAPABILITY MANAGEMENT</span>
+                <h2>Skills</h2>
+                <p>Manage the technical skills available in your organization.</p>
+            </div>
+
+            <button class="primary-btn" onclick="openSkillModal()">
+                + Add Skill
+            </button>
+
+        </div>
+
+
+        <div class="skills-grid" id="skillsGrid">
+            Loading skills...
+        </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+    <section id="projects" class="page-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">PROJECT MANAGEMENT</span>
+                <h2>Projects</h2>
+                <p>Manage projects and their staffing requirements.</p>
+            </div>
+
+            <button class="primary-btn" onclick="openProjectModal()">
+                + Add Project
+            </button>
+
+        </div>
+
+
+        <div class="projects-grid" id="projectsGrid">
+            Loading projects...
+        </div>
+
+    </section>
+
+
+    <!-- RECOMMENDATIONS -->
+    <section id="recommendations" class="page-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">AI-ASSISTED STAFFING</span>
+                <h2>Employee Recommendations</h2>
+                <p>Find employees whose skills match project requirements.</p>
+            </div>
+
+        </div>
+
+
+        <div class="recommendation-selector">
+
+            <label>Select Project</label>
+
+            <select id="recommendationProject"
+                    onchange="loadRecommendations()">
+
+                <option value="">Select a project</option>
+
+            </select>
+
+        </div>
+
+
+        <div id="recommendationResults">
+
+            <div class="empty-state large">
+                Select a project to see recommended employees.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ALLOCATIONS -->
+    <section id="allocations" class="page-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">RESOURCE ALLOCATION</span>
+                <h2>Allocations</h2>
+                <p>Track employee allocation across projects.</p>
+            </div>
+
+            <button class="primary-btn" onclick="openAllocationModal()">
+                + Allocate Employee
+            </button>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div id="allocationTable" class="table-container">
+                Loading allocations...
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- EMPLOYEE MODAL -->
+
+<div id="employeeModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <div>
+                <span class="section-label">NEW RECORD</span>
+                <h2>Add Employee</h2>
+            </div>
+
+            <button class="close-btn" onclick="closeModal('employeeModal')">
+                ×
+            </button>
+        </div>
+
+
+        <form onsubmit="createEmployee(event)">
+
+            <label>Name</label>
+            <input id="employeeName" required>
+
+            <label>Email</label>
+            <input id="employeeEmail" type="email" required>
+
+            <label>Role</label>
+            <input id="employeeRole" required>
+
+            <label>Availability Capacity (%)</label>
+            <input id="employeeAvailability"
+                   type="number"
+                   min="0"
+                   max="100"
+                   value="100"
+                   required>
+
+            <div class="form-actions">
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeModal('employeeModal')">
+                    Cancel
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    Add Employee
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- SKILL MODAL -->
+
+<div id="skillModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="section-label">NEW RECORD</span>
+                <h2>Add Skill</h2>
+            </div>
+
+            <button class="close-btn" onclick="closeModal('skillModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <form onsubmit="createSkill(event)">
+
+            <label>Skill Name</label>
+            <input id="skillName" required>
+
+
+            <label>Category</label>
+
+            <select id="skillCategory">
+
+                <option value="Programming">Programming</option>
+                <option value="Database">Database</option>
+                <option value="Backend Development">
+                    Backend Development
+                </option>
+                <option value="Frontend Development">
+                    Frontend Development
+                </option>
+                <option value="Data Science">Data Science</option>
+                <option value="Cloud">Cloud</option>
+                <option value="Tools">Tools</option>
+
+            </select>
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeModal('skillModal')">
+                    Cancel
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    Add Skill
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- PROJECT MODAL -->
+
+<div id="projectModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="section-label">NEW RECORD</span>
+                <h2>Add Project</h2>
+            </div>
+
+            <button class="close-btn"
+                    onclick="closeModal('projectModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <form onsubmit="createProject(event)">
+
+            <label>Project Name</label>
+            <input id="projectName" required>
+
+
+            <label>Description</label>
+
+            <textarea id="projectDescription"></textarea>
+
+
+            <label>Status</label>
+
+            <select id="projectStatus">
+
+                <option value="PLANNED">PLANNED</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="COMPLETED">COMPLETED</option>
+
+            </select>
+
+
+            <label>Required Capacity (%)</label>
+
+            <input id="projectCapacity"
+                   type="number"
+                   min="0"
+                   max="100"
+                   value="100">
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeModal('projectModal')">
+                    Cancel
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    Add Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ALLOCATION MODAL -->
+
+<div id="allocationModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="section-label">RESOURCE PLANNING</span>
+                <h2>Allocate Employee</h2>
+            </div>
+
+            <button class="close-btn"
+                    onclick="closeModal('allocationModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <form onsubmit="createAllocation(event)">
+
+            <label>Employee</label>
+
+            <select id="allocationEmployee" required>
+                <option value="">Select employee</option>
+            </select>
+
+
+            <label>Project</label>
+
+            <select id="allocationProject" required>
+                <option value="">Select project</option>
+            </select>
+
+
+            <label>Allocation Percentage</label>
+
+            <input id="allocationPercentage"
+                   type="number"
+                   min="1"
+                   max="100"
+                   value="50"
+                   required>
+
+
+            <label>Start Date</label>
+
+            <input id="allocationStart"
+                   type="date">
+
+
+            <label>End Date</label>
+
+            <input id="allocationEnd"
+                   type="date">
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeModal('allocationModal')">
+                    Cancel
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    Allocate
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast"></div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
